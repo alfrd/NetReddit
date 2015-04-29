@@ -82,9 +82,9 @@ public class MainActivity extends Activity {
             UserAgent myUserAgent = UserAgent.of("Android", "com.hyco.netreddi", "0.1", "iamzzleeping");
 
             RedditClient redditClient = new RedditClient(myUserAgent);
-            String psswd = getString(R.string.iamzzleeping_password);
 
-            Credentials credentials = Credentials.script("iamzzleeping", psswd , "gYCAsAZbxsXdAA", "j6AjliaTCY1r8_tSP86mVyROJJo");
+
+            Credentials credentials = Credentials.script("iamzzleeping", "PLEASE INSERT PASSWORD" , "gYCAsAZbxsXdAA", "j6AjliaTCY1r8_tSP86mVyROJJo");
 
             try {
 
