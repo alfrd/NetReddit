@@ -20,4 +20,25 @@
         android:layout_marginBottom="5dp"
         />
 
+
+    <TextView
+        android:id="@+id/text3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/text2"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:layout_marginLeft="10dp"
+        android:layout_marginBottom="5dp"
+        />
+
+    <TextView
+        android:id="@+id/text4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/text2"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:layout_marginLeft="10dp"
+        android:layout_marginBottom="5dp"
+        android:visibility="gone"
+        />
 </LinearLayout>

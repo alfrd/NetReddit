@@ -3,10 +3,14 @@ package com.hyco.netreddit;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.app.ProgressDialog;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarDrawerToggle;
+
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -34,32 +38,59 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 
 
 public class MainActivity extends Activity {
     ListView listView;
     private TextView textView;
     private List<String[]> itemList = new LinkedList<String[]>();
-    String subredditName;
 
     private ArrayList<String> subredditList;
     private DrawerLayout drawerLayout;
     private ListView drawerList;
+    private ActionBarDrawerToggle mDrawerToggle;
+    private ProgressDialog hej;
     String chosenSubreddit;
+    public final static String EXTRA_MESSAGE = "com.hyco.netreddit.MESSAGE";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         getActionBar().show();
-        setTitle("Frontpage");
-        chosenSubreddit = "gunners";
-        subredditName = "Frontpage";
+
+
+
         listView = (ListView) findViewById(R.id.listView);
         //textView = (TextView) findViewById(R.id.headline_subreddit);
+        Intent intent = getIntent();
+
+        chosenSubreddit = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
+
+        if (chosenSubreddit == null){
+            setTitle("frontpage");
+        }else{
+            setTitle(chosenSubreddit);
+        }
+
+
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+                TextView c = (TextView) view.findViewById(R.id.text4);
+                String s = c.getText().toString();
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(s));
+                startActivity(browserIntent);
+            }
+        });
         new getLinks().execute();
 
         String[] osArray = { "android", "soccer", "all", "pics", "videos" };
@@ -67,14 +98,37 @@ public class MainActivity extends Activity {
         drawerList = (ListView) findViewById(R.id.left_drawer);
         drawerList.setAdapter(new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1, osArray));
+        mDrawerToggle = new ActionBarDrawerToggle (this,drawerLayout,R.string.iamzzleeping_password,R.string.iamzzleeping_password);
 
-        //drawerList.setOnItemClickListener(new DrawerItemClickListener());
+        getActionBar().setDisplayHomeAsUpEnabled(true);
+        getActionBar().setHomeButtonEnabled(true);
+        drawerLayout.setDrawerListener(mDrawerToggle);
+        mDrawerToggle.syncState();
+
+        drawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+                String selectedFromList = (drawerList.getItemAtPosition(position).toString());
+                Intent intent = new Intent(MainActivity.this,MainActivity.class);
+                intent.putExtra(EXTRA_MESSAGE, selectedFromList);
+                startActivity(intent);
+                drawerLayout.closeDrawers();
+            }
+        });
+
 
     }
 
-
-
     private class getLinks extends AsyncTask<Void,Void,List<String[]>> {
+
+        @Override
+        protected void onPreExecute() {
+            hej =  new ProgressDialog(MainActivity.this);
+            hej.setMessage("Loading");
+            hej.show();
+
+        }
+
 
 
         @Override
@@ -84,7 +138,7 @@ public class MainActivity extends Activity {
             RedditClient redditClient = new RedditClient(myUserAgent);
             String psswd = getString(R.string.iamzzleeping_password);
 
-            Credentials credentials = Credentials.script("iamzzleeping", psswd , "gYCAsAZbxsXdAA", "j6AjliaTCY1r8_tSP86mVyROJJo");
+            Credentials credentials = Credentials.script("", psswd , "ClientID", "ClientSecret");
 
             try {
 
@@ -94,22 +148,12 @@ public class MainActivity extends Activity {
                 e.printStackTrace();
             }
 
-            SubredditPaginator frontPage = new SubredditPaginator(redditClient);
+            SubredditPaginator frontPage = new SubredditPaginator(redditClient,chosenSubreddit);
 
             Listing<Submission> submissions = frontPage.next();
             for (Submission s : submissions) {
-
-                itemList.add(new String[]{s.getTitle(),s.getAuthor()});
+                itemList.add(new String[]{s.getTitle(), s.getCommentCount() + " comments","u/" + s.getAuthor() + " * r/" + s.getSubredditName() + " * " + s.getScore() + " points",s.getUrl() });
             }
-
-
-
-
-
-
-
-
-
 
 
 
@@ -149,6 +193,7 @@ public class MainActivity extends Activity {
         }
         protected void onPostExecute(List<String[]> list){
 
+            hej.dismiss();
             listView.setAdapter(new ArrayAdapter<String[]>(
                     MainActivity.this,
                     R.layout.post_list,
@@ -166,9 +211,13 @@ public class MainActivity extends Activity {
                     String[] entry = itemList.get(position);
                     TextView text1 = (TextView) view.findViewById(R.id.text1);
                     TextView text2 = (TextView) view.findViewById(R.id.text2);
+                    TextView text3 = (TextView) view.findViewById(R.id.text3);
+                    TextView text4 = (TextView) view.findViewById(R.id.text4);
+
                     text1.setText(entry[0]);
                     text2.setText(entry[1]);
-
+                    text3.setText(entry[2]);
+                    text4.setText(entry[3]);
                     return view;
 
 
@@ -199,4 +248,7 @@ public class MainActivity extends Activity {
 
         return super.onOptionsItemSelected(item);
     }
+
+
+
 }
