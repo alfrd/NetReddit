@@ -3,34 +3,14 @@ package com.hyco.netreddit;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
-=======
->>>>>>> parent of 15c641c... Johan
-=======
->>>>>>> parent of 15c641c... Johan
 import android.os.AsyncTask;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-<<<<<<< HEAD
-<<<<<<< HEAD
 import android.support.v7.app.ActionBarDrawerToggle;
 
-=======
-import android.os.AsyncTask;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarActivity;
-import android.os.Bundle;
->>>>>>> origin/master
-=======
->>>>>>> parent of 15c641c... Johan
-=======
->>>>>>> parent of 15c641c... Johan
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -58,77 +38,33 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-=======
->>>>>>> parent of 15c641c... Johan
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
-<<<<<<< HEAD
 import java.util.Locale;
-=======
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
->>>>>>> origin/master
-=======
->>>>>>> parent of 15c641c... Johan
-=======
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
->>>>>>> parent of 15c641c... Johan
 
 
 public class MainActivity extends Activity {
     ListView listView;
     private TextView textView;
     private List<String[]> itemList = new LinkedList<String[]>();
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-    String subredditName;
->>>>>>> origin/master
-=======
-    String subredditName;
->>>>>>> parent of 15c641c... Johan
-=======
-    String subredditName;
->>>>>>> parent of 15c641c... Johan
 
     private ArrayList<String> subredditList;
     private DrawerLayout drawerLayout;
     private ListView drawerList;
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
     private ActionBarDrawerToggle mDrawerToggle;
     private ProgressDialog hej;
     String chosenSubreddit;
     public final static String EXTRA_MESSAGE = "com.hyco.netreddit.MESSAGE";
-=======
-    String chosenSubreddit;
->>>>>>> origin/master
-=======
-    String chosenSubreddit;
->>>>>>> parent of 15c641c... Johan
-=======
-    String chosenSubreddit;
->>>>>>> parent of 15c641c... Johan
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         getActionBar().show();
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 
 
 
@@ -155,27 +91,6 @@ public class MainActivity extends Activity {
                 startActivity(browserIntent);
             }
         });
-=======
-        setTitle("Frontpage");
-        chosenSubreddit = "gunners";
-        subredditName = "Frontpage";
-        listView = (ListView) findViewById(R.id.listView);
-        //textView = (TextView) findViewById(R.id.headline_subreddit);
->>>>>>> origin/master
-=======
-        setTitle("Frontpage");
-        chosenSubreddit = "gunners";
-        subredditName = "Frontpage";
-        listView = (ListView) findViewById(R.id.listView);
-        //textView = (TextView) findViewById(R.id.headline_subreddit);
->>>>>>> parent of 15c641c... Johan
-=======
-        setTitle("Frontpage");
-        chosenSubreddit = "gunners";
-        subredditName = "Frontpage";
-        listView = (ListView) findViewById(R.id.listView);
-        //textView = (TextView) findViewById(R.id.headline_subreddit);
->>>>>>> parent of 15c641c... Johan
         new getLinks().execute();
 
         String[] osArray = { "android", "soccer", "all", "pics", "videos" };
@@ -183,9 +98,6 @@ public class MainActivity extends Activity {
         drawerList = (ListView) findViewById(R.id.left_drawer);
         drawerList.setAdapter(new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1, osArray));
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
         mDrawerToggle = new ActionBarDrawerToggle (this,drawerLayout,R.string.iamzzleeping_password,R.string.iamzzleeping_password);
 
         getActionBar().setDisplayHomeAsUpEnabled(true);
@@ -203,36 +115,20 @@ public class MainActivity extends Activity {
                 drawerLayout.closeDrawers();
             }
         });
-=======
->>>>>>> parent of 15c641c... Johan
-=======
->>>>>>> parent of 15c641c... Johan
 
-        //drawerList.setOnItemClickListener(new DrawerItemClickListener());
 
     }
 
-<<<<<<< HEAD
-
-
-<<<<<<< HEAD
-=======
-
-        //drawerList.setOnItemClickListener(new DrawerItemClickListener());
-
-    }
-=======
-
->>>>>>> parent of 15c641c... Johan
-
     private class getLinks extends AsyncTask<Void,Void,List<String[]>> {
 
+        @Override
+        protected void onPreExecute() {
+            hej =  new ProgressDialog(MainActivity.this);
+            hej.setMessage("Loading");
+            hej.show();
 
-    private class getLinks extends AsyncTask<Void,Void,List<String[]>> {
->>>>>>> origin/master
-=======
-    private class getLinks extends AsyncTask<Void,Void,List<String[]>> {
->>>>>>> parent of 15c641c... Johan
+        }
+
 
 
         @Override
@@ -240,23 +136,9 @@ public class MainActivity extends Activity {
             UserAgent myUserAgent = UserAgent.of("Android", "com.hyco.netreddi", "0.1", "iamzzleeping");
 
             RedditClient redditClient = new RedditClient(myUserAgent);
-<<<<<<< HEAD
             String psswd = getString(R.string.iamzzleeping_password);
 
-<<<<<<< HEAD
-<<<<<<< HEAD
             Credentials credentials = Credentials.script("", psswd , "ClientID", "ClientSecret");
-=======
-
-
-            Credentials credentials = Credentials.script("iamzzleeping", "PLEASE INSERT PASSWORD" , "gYCAsAZbxsXdAA", "j6AjliaTCY1r8_tSP86mVyROJJo");
->>>>>>> origin/master
-=======
-            Credentials credentials = Credentials.script("iamzzleeping", psswd , "gYCAsAZbxsXdAA", "j6AjliaTCY1r8_tSP86mVyROJJo");
->>>>>>> parent of 15c641c... Johan
-=======
-            Credentials credentials = Credentials.script("iamzzleeping", psswd , "gYCAsAZbxsXdAA", "j6AjliaTCY1r8_tSP86mVyROJJo");
->>>>>>> parent of 15c641c... Johan
 
             try {
 
@@ -266,67 +148,16 @@ public class MainActivity extends Activity {
                 e.printStackTrace();
             }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
             SubredditPaginator frontPage = new SubredditPaginator(redditClient,chosenSubreddit);
 
             Listing<Submission> submissions = frontPage.next();
             for (Submission s : submissions) {
                 itemList.add(new String[]{s.getTitle(), s.getCommentCount() + " comments","u/" + s.getAuthor() + " * r/" + s.getSubredditName() + " * " + s.getScore() + " points",s.getUrl() });
-=======
-            SubredditPaginator frontPage = new SubredditPaginator(redditClient);
-
-            Listing<Submission> submissions = frontPage.next();
-            for (Submission s : submissions) {
-
-                itemList.add(new String[]{s.getTitle(),s.getAuthor()});
->>>>>>> origin/master
-=======
-            SubredditPaginator frontPage = new SubredditPaginator(redditClient);
-
-            Listing<Submission> submissions = frontPage.next();
-            for (Submission s : submissions) {
-
-                itemList.add(new String[]{s.getTitle(),s.getAuthor()});
->>>>>>> parent of 15c641c... Johan
-=======
-            SubredditPaginator frontPage = new SubredditPaginator(redditClient);
-
-            Listing<Submission> submissions = frontPage.next();
-            for (Submission s : submissions) {
-
-                itemList.add(new String[]{s.getTitle(),s.getAuthor()});
->>>>>>> parent of 15c641c... Johan
             }
 
 
 
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
->>>>>>> parent of 15c641c... Johan
-=======
->>>>>>> parent of 15c641c... Johan
-
-
-
-
-
-
-
-
-
-<<<<<<< HEAD
-<<<<<<< HEAD
->>>>>>> origin/master
-=======
->>>>>>> parent of 15c641c... Johan
-=======
->>>>>>> parent of 15c641c... Johan
             /*try {
                 URL subredditURL = new URL(
                         "http://www.reddit.com/r/" + chosenSubreddit + ".json?limit=15");
@@ -362,16 +193,7 @@ public class MainActivity extends Activity {
         }
         protected void onPostExecute(List<String[]> list){
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
             hej.dismiss();
-=======
->>>>>>> origin/master
-=======
->>>>>>> parent of 15c641c... Johan
-=======
->>>>>>> parent of 15c641c... Johan
             listView.setAdapter(new ArrayAdapter<String[]>(
                     MainActivity.this,
                     R.layout.post_list,
@@ -389,9 +211,6 @@ public class MainActivity extends Activity {
                     String[] entry = itemList.get(position);
                     TextView text1 = (TextView) view.findViewById(R.id.text1);
                     TextView text2 = (TextView) view.findViewById(R.id.text2);
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
                     TextView text3 = (TextView) view.findViewById(R.id.text3);
                     TextView text4 = (TextView) view.findViewById(R.id.text4);
 
@@ -399,21 +218,6 @@ public class MainActivity extends Activity {
                     text2.setText(entry[1]);
                     text3.setText(entry[2]);
                     text4.setText(entry[3]);
-=======
-                    text1.setText(entry[0]);
-                    text2.setText(entry[1]);
-
->>>>>>> origin/master
-=======
-                    text1.setText(entry[0]);
-                    text2.setText(entry[1]);
-
->>>>>>> parent of 15c641c... Johan
-=======
-                    text1.setText(entry[0]);
-                    text2.setText(entry[1]);
-
->>>>>>> parent of 15c641c... Johan
                     return view;
 
 
@@ -444,16 +248,7 @@ public class MainActivity extends Activity {
 
         return super.onOptionsItemSelected(item);
     }
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 
 
 
-=======
->>>>>>> origin/master
-=======
->>>>>>> parent of 15c641c... Johan
-=======
->>>>>>> parent of 15c641c... Johan
 }

@@ -20,9 +20,6 @@
         android:layout_marginBottom="5dp"
         />
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 
     <TextView
         android:id="@+id/text3"
@@ -44,10 +41,4 @@
         android:layout_marginBottom="5dp"
         android:visibility="gone"
         />
-=======
->>>>>>> origin/master
-=======
->>>>>>> parent of 15c641c... Johan
-=======
->>>>>>> parent of 15c641c... Johan
 </LinearLayout>
