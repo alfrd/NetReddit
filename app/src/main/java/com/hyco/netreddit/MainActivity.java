@@ -5,15 +5,19 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
+=======
+>>>>>>> parent of 15c641c... Johan
 =======
 >>>>>>> parent of 15c641c... Johan
 import android.os.AsyncTask;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+<<<<<<< HEAD
 <<<<<<< HEAD
 import android.support.v7.app.ActionBarDrawerToggle;
 
@@ -23,6 +27,8 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 >>>>>>> origin/master
+=======
+>>>>>>> parent of 15c641c... Johan
 =======
 >>>>>>> parent of 15c641c... Johan
 import android.view.Menu;
@@ -54,6 +60,7 @@ import java.net.URL;
 import java.net.URLConnection;
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 =======
@@ -70,6 +77,11 @@ import java.util.List;
 >>>>>>> origin/master
 =======
 >>>>>>> parent of 15c641c... Johan
+=======
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+>>>>>>> parent of 15c641c... Johan
 
 
 public class MainActivity extends Activity {
@@ -78,9 +90,13 @@ public class MainActivity extends Activity {
     private List<String[]> itemList = new LinkedList<String[]>();
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
     String subredditName;
 >>>>>>> origin/master
+=======
+    String subredditName;
+>>>>>>> parent of 15c641c... Johan
 =======
     String subredditName;
 >>>>>>> parent of 15c641c... Johan
@@ -88,6 +104,7 @@ public class MainActivity extends Activity {
     private ArrayList<String> subredditList;
     private DrawerLayout drawerLayout;
     private ListView drawerList;
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
     private ActionBarDrawerToggle mDrawerToggle;
@@ -100,12 +117,16 @@ public class MainActivity extends Activity {
 =======
     String chosenSubreddit;
 >>>>>>> parent of 15c641c... Johan
+=======
+    String chosenSubreddit;
+>>>>>>> parent of 15c641c... Johan
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         getActionBar().show();
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 
@@ -148,6 +169,13 @@ public class MainActivity extends Activity {
         listView = (ListView) findViewById(R.id.listView);
         //textView = (TextView) findViewById(R.id.headline_subreddit);
 >>>>>>> parent of 15c641c... Johan
+=======
+        setTitle("Frontpage");
+        chosenSubreddit = "gunners";
+        subredditName = "Frontpage";
+        listView = (ListView) findViewById(R.id.listView);
+        //textView = (TextView) findViewById(R.id.headline_subreddit);
+>>>>>>> parent of 15c641c... Johan
         new getLinks().execute();
 
         String[] osArray = { "android", "soccer", "all", "pics", "videos" };
@@ -155,6 +183,7 @@ public class MainActivity extends Activity {
         drawerList = (ListView) findViewById(R.id.left_drawer);
         drawerList.setAdapter(new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1, osArray));
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
         mDrawerToggle = new ActionBarDrawerToggle (this,drawerLayout,R.string.iamzzleeping_password,R.string.iamzzleeping_password);
@@ -176,11 +205,14 @@ public class MainActivity extends Activity {
         });
 =======
 >>>>>>> parent of 15c641c... Johan
+=======
+>>>>>>> parent of 15c641c... Johan
 
         //drawerList.setOnItemClickListener(new DrawerItemClickListener());
 
     }
 
+<<<<<<< HEAD
 
 
 <<<<<<< HEAD
@@ -189,7 +221,11 @@ public class MainActivity extends Activity {
         //drawerList.setOnItemClickListener(new DrawerItemClickListener());
 
     }
+=======
 
+>>>>>>> parent of 15c641c... Johan
+
+    private class getLinks extends AsyncTask<Void,Void,List<String[]>> {
 
 
     private class getLinks extends AsyncTask<Void,Void,List<String[]>> {
@@ -208,12 +244,16 @@ public class MainActivity extends Activity {
             String psswd = getString(R.string.iamzzleeping_password);
 
 <<<<<<< HEAD
+<<<<<<< HEAD
             Credentials credentials = Credentials.script("", psswd , "ClientID", "ClientSecret");
 =======
 
 
             Credentials credentials = Credentials.script("iamzzleeping", "PLEASE INSERT PASSWORD" , "gYCAsAZbxsXdAA", "j6AjliaTCY1r8_tSP86mVyROJJo");
 >>>>>>> origin/master
+=======
+            Credentials credentials = Credentials.script("iamzzleeping", psswd , "gYCAsAZbxsXdAA", "j6AjliaTCY1r8_tSP86mVyROJJo");
+>>>>>>> parent of 15c641c... Johan
 =======
             Credentials credentials = Credentials.script("iamzzleeping", psswd , "gYCAsAZbxsXdAA", "j6AjliaTCY1r8_tSP86mVyROJJo");
 >>>>>>> parent of 15c641c... Johan
@@ -226,6 +266,7 @@ public class MainActivity extends Activity {
                 e.printStackTrace();
             }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
             SubredditPaginator frontPage = new SubredditPaginator(redditClient,chosenSubreddit);
@@ -249,6 +290,14 @@ public class MainActivity extends Activity {
 
                 itemList.add(new String[]{s.getTitle(),s.getAuthor()});
 >>>>>>> parent of 15c641c... Johan
+=======
+            SubredditPaginator frontPage = new SubredditPaginator(redditClient);
+
+            Listing<Submission> submissions = frontPage.next();
+            for (Submission s : submissions) {
+
+                itemList.add(new String[]{s.getTitle(),s.getAuthor()});
+>>>>>>> parent of 15c641c... Johan
             }
 
 
@@ -256,7 +305,10 @@ public class MainActivity extends Activity {
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> parent of 15c641c... Johan
 =======
 >>>>>>> parent of 15c641c... Johan
 
@@ -269,7 +321,10 @@ public class MainActivity extends Activity {
 
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/master
+=======
+>>>>>>> parent of 15c641c... Johan
 =======
 >>>>>>> parent of 15c641c... Johan
             /*try {
@@ -309,9 +364,12 @@ public class MainActivity extends Activity {
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
             hej.dismiss();
 =======
 >>>>>>> origin/master
+=======
+>>>>>>> parent of 15c641c... Johan
 =======
 >>>>>>> parent of 15c641c... Johan
             listView.setAdapter(new ArrayAdapter<String[]>(
@@ -333,6 +391,7 @@ public class MainActivity extends Activity {
                     TextView text2 = (TextView) view.findViewById(R.id.text2);
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
                     TextView text3 = (TextView) view.findViewById(R.id.text3);
                     TextView text4 = (TextView) view.findViewById(R.id.text4);
 
@@ -345,6 +404,11 @@ public class MainActivity extends Activity {
                     text2.setText(entry[1]);
 
 >>>>>>> origin/master
+=======
+                    text1.setText(entry[0]);
+                    text2.setText(entry[1]);
+
+>>>>>>> parent of 15c641c... Johan
 =======
                     text1.setText(entry[0]);
                     text2.setText(entry[1]);
@@ -382,11 +446,14 @@ public class MainActivity extends Activity {
     }
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 
 
 =======
 >>>>>>> origin/master
+=======
+>>>>>>> parent of 15c641c... Johan
 =======
 >>>>>>> parent of 15c641c... Johan
 }
