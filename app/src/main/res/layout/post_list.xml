@@ -20,6 +20,7 @@
         android:layout_marginBottom="5dp"
         />
 
+<<<<<<< HEAD
 
     <TextView
         android:id="@+id/text3"
@@ -41,4 +42,6 @@
         android:layout_marginBottom="5dp"
         android:visibility="gone"
         />
+=======
+>>>>>>> origin/master
 </LinearLayout>

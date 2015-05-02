@@ -85,6 +85,7 @@
     </content>
     <orderEntry type="jdk" jdkName="Android API 22 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
+<<<<<<< HEAD
     <orderEntry type="library" exported="" name="jackson-databind-2.5.0" level="project" />
     <orderEntry type="library" exported="" name="guava-18.0" level="project" />
     <orderEntry type="library" exported="" name="jackson-annotations-2.5.0" level="project" />
@@ -96,6 +97,19 @@
     <orderEntry type="library" exported="" name="JRAW-0.7.0.2" level="project" />
     <orderEntry type="library" exported="" name="appcompat-v7-22.1.1" level="project" />
     <orderEntry type="library" exported="" name="okio-1.2.0" level="project" />
+=======
+    <orderEntry type="library" exported="" name="appcompat-v7-22.1.1" level="project" />
+    <orderEntry type="library" exported="" name="jackson-annotations-2.5.0" level="project" />
+    <orderEntry type="library" exported="" name="jackson-core-2.5.0" level="project" />
+    <orderEntry type="library" exported="" name="slf4j-api-1.7.10" level="project" />
+    <orderEntry type="library" exported="" name="okio-1.2.0" level="project" />
+    <orderEntry type="library" exported="" name="okhttp-2.2.0" level="project" />
+    <orderEntry type="library" exported="" name="JRAW-0.7.0.2" level="project" />
+    <orderEntry type="library" exported="" name="support-v4-22.1.1" level="project" />
+    <orderEntry type="library" exported="" name="support-annotations-22.1.1" level="project" />
+    <orderEntry type="library" exported="" name="jackson-databind-2.5.0" level="project" />
+    <orderEntry type="library" exported="" name="guava-18.0" level="project" />
+>>>>>>> origin/master
   </component>
 </module>
 
