@@ -21,6 +21,7 @@
         />
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 
     <TextView
         android:id="@+id/text3"
@@ -44,4 +45,6 @@
         />
 =======
 >>>>>>> origin/master
+=======
+>>>>>>> parent of 15c641c... Johan
 </LinearLayout>
