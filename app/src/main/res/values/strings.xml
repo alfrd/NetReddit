@@ -4,5 +4,7 @@
     <string name="hello_world">Foskas är n00b!</string>
     <string name="action_settings">Settings</string>
     <string name="choose_subreddit">Choose a subreddit</string>
-    <string name="iamzzleeping_password">Insert password</string>
+    <string name="iamzzleeping_password">94svedis591</string>
+    <string name="title_activity_comments">CommentsActivity</string>
+    <string name="title_activity_login">LoginActivity</string>
 </resources>
