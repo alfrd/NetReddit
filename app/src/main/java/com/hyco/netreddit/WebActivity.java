@@ -1,7 +1,9 @@
 package com.hyco.netreddit;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -9,6 +11,7 @@ import android.view.Window;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ProgressBar;
 
 
 public class WebActivity extends Activity {
@@ -16,21 +19,18 @@ public class WebActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        getWindow().requestFeature(Window.FEATURE_PROGRESS);
         super.onCreate(savedInstanceState);
 
         WebView webview = new WebView(this);
-        getWindow().requestFeature(Window.FEATURE_PROGRESS);
+
+
         this.setProgressBarVisibility(true);
 
         webview.getSettings().setJavaScriptEnabled(true);
 
         final Activity activity = this;
-        webview.setWebChromeClient(new WebChromeClient() {
-            public void onProgressChanged(WebView view, int progress) {
 
-                activity.setProgress(progress * 1000);
-            }
-        });
         setContentView(webview);
 
         webview.getSettings().setSupportZoom(true);
@@ -49,13 +49,26 @@ public class WebActivity extends Activity {
         }
 
 
-
+       final ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Loading..");
         webview.loadUrl(url);
         webview.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 view.loadUrl(url);
                 return false;
+            }
+            @Override
+            public void onPageFinished(WebView view, final String url) {
+
+                progressDialog.cancel();
+
+
+            }
+            @Override
+            public void onPageStarted(WebView view, String url, Bitmap favicon) {
+
+                progressDialog.show();
             }
         });
 

@@ -74,7 +74,7 @@ public class MainActivity extends Activity {
 
 
         webView = new WebView(MainActivity.this);
-        webView.clearCache(true);
+
         webView.getSettings().setLoadWithOverviewMode(true);
         webView.getSettings().setUseWideViewPort(true);
         webView.getSettings().setSupportZoom(true);
@@ -181,7 +181,7 @@ public class MainActivity extends Activity {
             Listing<Submission> submissions = current.next();
             for (Submission s : submissions) {
 
-                itemList.add(new String[]{s.getTitle(), s.getCommentCount() + " comments" + " * " + s.getDomain(), "u/" + s.getAuthor() + " * r/" + s.getSubredditName() + " * " + s.getScore() + " points", s.getUrl(),s.getThumbnail(),"https://www.reddit.com" +s.getPermalink() + ".json",s.getId()});
+                itemList.add(new String[]{s.getTitle(), s.getCommentCount() + " comments" + " * " + s.getDomain(), "u/" + s.getAuthor() + " * r/" + s.getSubredditName() + " * " + s.getScore() + " points", s.getUrl(),s.getThumbnail(),"https://www.reddit.com" +s.getPermalink() + ".json",s.getId(),Integer.toString(s.getVote().getValue())});
             }
 
             /*try {
@@ -228,7 +228,17 @@ public class MainActivity extends Activity {
                     R.id.text1,
                     itemList) {
 
+                @Override
+                public int getViewTypeCount() {
+                    int Count = 30;
+                    return Count;
+                }
 
+                @Override
+                public int getItemViewType(int position) {
+
+                    return position;
+                }
                 @Override
                 public View getView(int position, View convertView, ViewGroup parent) {
 
@@ -243,7 +253,7 @@ public class MainActivity extends Activity {
                     TextView text4 = (TextView) view.findViewById(R.id.text4);
                     TextView text5 = (TextView) view.findViewById(R.id.text5);
                     TextView text6 = (TextView) view.findViewById(R.id.text6);
-
+                    TextView text7 = (TextView) view.findViewById(R.id.text7);
                     ImageView img1 = (ImageView) view.findViewById(R.id.img1);
 
 
@@ -253,11 +263,22 @@ public class MainActivity extends Activity {
                     text4.setText(entry[3]);
                     text5.setText(entry[5]);
                     text6.setText(entry[6]);
+                    text7.setText(entry[7]);
 
                     Picasso.with(getBaseContext()).load(entry[4]).resize(200, 200).centerCrop().into(img1);
 
-                   final Button button1 = (Button) view.findViewById(R.id.button1);
+                    final Button button1 = (Button) view.findViewById(R.id.button1);
                     final Button button2 = (Button) view.findViewById(R.id.button2);
+
+
+
+                    int liked = Integer.parseInt(text7.getText().toString());
+
+                    if (liked > 0) {
+                        button1.setTextColor(Color.parseColor("#FF5722"));
+                    } else if(liked < 0){
+                        button2.setTextColor(Color.parseColor("#00B0FF"));
+                    }
 
                     button1.setOnClickListener(new AdapterView.OnClickListener() {
 
@@ -268,12 +289,11 @@ public class MainActivity extends Activity {
                             String s = c.getText().toString();
                             new upvote(s).execute();
                             button1.setTextColor(Color.parseColor("#FF5722"));
-
+                            button2.setTextColor(Color.WHITE);
 
 
                         }
                     });
-
 
 
                     button2.setOnClickListener(new AdapterView.OnClickListener() {
@@ -285,6 +305,7 @@ public class MainActivity extends Activity {
                             String s = c.getText().toString();
                             new downvote(s).execute();
                             button2.setTextColor(Color.parseColor("#00B0FF"));
+                            button1.setTextColor(Color.WHITE);
 
                         }
                     });
@@ -519,34 +540,6 @@ public class MainActivity extends Activity {
             e.printStackTrace();
         }
     }
-
-    public void upvote(View view){
-        TextView c = (TextView) view.findViewById(R.id.text6);
-        String s = c.getText().toString();
-        Submission submission = redditClient.getSubmission(s);
-        VoteDirection newVoteDirection = submission.getVote() == VoteDirection.NO_VOTE ? VoteDirection.UPVOTE : VoteDirection.NO_VOTE;
-        net.dean.jraw.managers.AccountManager accountManager = new net.dean.jraw.managers.AccountManager(redditClient);
-
-        try {
-            accountManager.vote(submission, newVoteDirection);
-        } catch (ApiException e) {
-            Toast.makeText(MainActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
-        }
-
-    }
-
-
-
-    public void downvote(View view){
-
-        Toast.makeText(MainActivity.this, "DOWNDANK", Toast.LENGTH_SHORT).show();
-
-    }
-
-
-
-
-
 
 
 }
