@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.provider.DocumentsContract;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.text.Html;
@@ -23,6 +24,9 @@ import com.squareup.picasso.Picasso;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.parser.Parser;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -42,7 +46,7 @@ private String comments;
     private String body;
     private ListView listView;
     private ArrayList list;
-    private List<Object[]> itemList = new LinkedList<Object[]>();
+    private List<String[]> itemList = new LinkedList<String[]>();
 
 
 
@@ -99,7 +103,7 @@ private String comments;
                         continue;
                     JSONObject data = r.getJSONObject(i).getJSONObject("data");
 
-                    itemList.add(new Object[]{data.getString("author") + " * " + data.getString("score") + " points", data.getString("body")});
+                    itemList.add(new String[]{data.getString("author") + " * " + data.getString("score") + " points", data.getString("body")});
 
                 }
 
@@ -112,7 +116,7 @@ private String comments;
 
         protected void onPostExecute(String s) {
             hej.dismiss();
-            listView.setAdapter(new ArrayAdapter<Object[]>(
+            listView.setAdapter(new ArrayAdapter<String[]>(
                     CommentsActivity.this,
                     R.layout.comments_list,
                     R.id.text1,
@@ -126,16 +130,16 @@ private String comments;
                     View view = super.getView(position, convertView, parent);
 
 
-                    Object[] entry = itemList.get(position);
+                    String[] entry = itemList.get(position);
                     TextView text1 = (TextView) view.findViewById(R.id.text1);
                     TextView text2 = (TextView) view.findViewById(R.id.text2);
 
-                    String html = entry[1].toString();
+                    String html = entry[1];
 
 
 
 
-                    text1.setText(entry[0].toString());
+                    text1.setText(entry[0]);
                     text2.setText(html);
 
 
