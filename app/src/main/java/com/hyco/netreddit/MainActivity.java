@@ -165,33 +165,43 @@ public class MainActivity extends Activity {
         @Override
         protected List<String[]> doInBackground(String... string) {
             SubredditPaginator current;
+
             if (string[0] == null || string[0].equals("frontpage")) {
                 current = new SubredditPaginator(redditClient);
             } else {
                 current = new SubredditPaginator(redditClient, string[0]);
             }
+
             current.setLimit(25);
             Date today = new Date();
             String dateposted;
-            Listing<Submission> submissions = current.next();
-            for (Submission s : submissions) {
-                Date posted = s.getCreatedUtc();
-                long diff = today.getTime() - posted.getTime();
-                long diffMinutes = TimeUnit.MILLISECONDS.toMinutes(diff);
-                long diffHours = TimeUnit.MILLISECONDS.toHours(diff);
-                long diffDays = TimeUnit.MILLISECONDS.toDays(diff);
 
-                if (diffMinutes < 60) {
-                    dateposted = diffMinutes + "m";
-                } else if (diffHours < 24) {
-                    dateposted = diffHours + "hr";
-                } else {
-                    dateposted = diffDays + "d";
+
+            try{
+                Listing<Submission> submissions = current.next();
+                for (Submission s : submissions) {
+                    Date posted = s.getCreatedUtc();
+                    long diff = today.getTime() - posted.getTime();
+                    long diffMinutes = TimeUnit.MILLISECONDS.toMinutes(diff);
+                    long diffHours = TimeUnit.MILLISECONDS.toHours(diff);
+                    long diffDays = TimeUnit.MILLISECONDS.toDays(diff);
+
+                    if (diffMinutes < 60) {
+                        dateposted = diffMinutes + "m";
+                    } else if (diffHours < 24) {
+                        dateposted = diffHours + "hr";
+                    } else {
+                        dateposted = diffDays + "d";
+                    }
+
+
+                    itemList.add(new String[]{s.getTitle(), dateposted + " * " + s.getDomain() + " * " + s.getCommentCount() + " comments", s.getAuthor() + " * r/" + s.getSubredditName() + " * " + s.getScore() + " points", s.getUrl(), s.getThumbnail(), "https://www.reddit.com" + s.getPermalink() + ".json", s.getId(), Integer.toString(s.getVote().getValue())});
                 }
-
-
-                itemList.add(new String[]{s.getTitle(), dateposted + " * " + s.getDomain() + " * " + s.getCommentCount() + " comments", s.getAuthor() + " * r/" + s.getSubredditName() + " * " + s.getScore() + " points", s.getUrl(), s.getThumbnail(), "https://www.reddit.com" + s.getPermalink() + ".json", s.getId(), Integer.toString(s.getVote().getValue())});
+            }catch(Exception e){
+                e.printStackTrace();
             }
+
+
 
             /*try {
 
@@ -346,7 +356,7 @@ public class MainActivity extends Activity {
             try {
                 accountManager.vote(submission, newVoteDirection);
             } catch (ApiException e) {
-
+                e.printStackTrace();
             }
 
             return null;
@@ -377,7 +387,7 @@ public class MainActivity extends Activity {
             try {
                 accountManager.vote(submission, newVoteDirection);
             } catch (ApiException e) {
-
+                e.printStackTrace();
             }
 
             return null;
@@ -435,8 +445,8 @@ public class MainActivity extends Activity {
                 public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
                     TextView c = (TextView) view.findViewById(R.id.text5);
                     String s = c.getText().toString();
-                /*Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(s));
-                startActivity(browserIntent);*/
+                    /*Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(s));
+                    startActivity(browserIntent);*/
                     Intent intent = new Intent(MainActivity.this, CommentsActivity.class);
                     intent.putExtra(EXTRA_MESSAGE, s);
                     startActivity(intent);
@@ -476,7 +486,12 @@ public class MainActivity extends Activity {
                                         int position, long id) {
                     String selectedFromList = (drawerList.getItemAtPosition(position).toString());
                     hej.show();
-                    new getLinks().execute(selectedFromList);
+                    try {
+                        new getLinks().execute(selectedFromList);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
                     itemList.clear();
                     drawerLayout.closeDrawers();
                     drawerList.setItemChecked(position, true);
