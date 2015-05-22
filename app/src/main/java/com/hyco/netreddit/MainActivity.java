@@ -355,7 +355,7 @@ public class MainActivity extends Activity {
 
             try {
                 accountManager.vote(submission, newVoteDirection);
-            } catch (ApiException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 
@@ -386,7 +386,7 @@ public class MainActivity extends Activity {
 
             try {
                 accountManager.vote(submission, newVoteDirection);
-            } catch (ApiException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 
