@@ -1,9 +1,9 @@
 package com.hyco.netreddit;
 
-import android.accounts.AccountManager;
+
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Context;
+
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -37,8 +37,7 @@ import net.dean.jraw.http.oauth.Credentials;
 import net.dean.jraw.http.oauth.OAuthData;
 import net.dean.jraw.http.oauth.OAuthException;
 import net.dean.jraw.http.oauth.OAuthHelper;
-import net.dean.jraw.models.Account;
-import net.dean.jraw.models.CommentNode;
+
 import net.dean.jraw.models.Listing;
 import net.dean.jraw.models.Submission;
 import net.dean.jraw.models.Subreddit;
@@ -46,10 +45,9 @@ import net.dean.jraw.models.VoteDirection;
 import net.dean.jraw.paginators.SubredditPaginator;
 import net.dean.jraw.paginators.UserSubredditsPaginator;
 
-import java.io.File;
+
 import java.net.URL;
-import java.sql.Time;
-import java.text.SimpleDateFormat;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -59,8 +57,7 @@ import java.util.concurrent.TimeUnit;
 
 
 public class MainActivity extends Activity {
-    ListView listView;
-
+    private ListView listView;
     private List<String[]> itemList = new LinkedList<String[]>();
     private RedditClient redditClient;
     private ArrayList<String> subredditList = new ArrayList<>();
@@ -68,8 +65,6 @@ public class MainActivity extends Activity {
     private ListView drawerList;
     private ActionBarDrawerToggle mDrawerToggle;
     private ProgressDialog hej;
-    String chosenSubreddit;
-    private WebView webView;
     public final static String EXTRA_MESSAGE = "com.hyco.netreddit.MESSAGE";
 
     @Override
@@ -77,7 +72,7 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
 
 
-        webView = new WebView(MainActivity.this);
+        WebView webView = new WebView(MainActivity.this);
 
         webView.getSettings().setLoadWithOverviewMode(true);
         webView.getSettings().setUseWideViewPort(true);
@@ -117,8 +112,6 @@ public class MainActivity extends Activity {
         setContentView(webView);
 
 
-
-
     }
 
     private class loginUser extends AsyncTask<Void, Void, String> {
@@ -142,8 +135,6 @@ public class MainActivity extends Activity {
     }
 
 
-
-
     private class getsubreddits extends AsyncTask<Void, Void, List<String>> {
 
 
@@ -156,7 +147,7 @@ public class MainActivity extends Activity {
                 subredditList.add(s.getDisplayName());
             }
             Collections.sort(subredditList);
-            subredditList.add(0,"frontpage");
+            subredditList.add(0, "frontpage");
             return subredditList;
 
         }
@@ -170,7 +161,6 @@ public class MainActivity extends Activity {
 
 
     private class getLinks extends AsyncTask<String, Void, List<String[]>> {
-
 
 
         @Override
@@ -192,17 +182,16 @@ public class MainActivity extends Activity {
                 long diffHours = TimeUnit.MILLISECONDS.toHours(diff);
                 long diffDays = TimeUnit.MILLISECONDS.toDays(diff);
 
-                if(diffMinutes < 60){
-                    dateposted =  diffMinutes + "min";
-                }else if(diffHours < 24){
+                if (diffMinutes < 60) {
+                    dateposted = diffMinutes + "m";
+                } else if (diffHours < 24) {
                     dateposted = diffHours + "hr";
-                } else{
-                    dateposted = diffDays + "days";
+                } else {
+                    dateposted = diffDays + "d";
                 }
 
 
-
-                itemList.add(new String[]{s.getTitle(), s.getCommentCount() + " comments" + " * " + s.getDomain() + " * " + dateposted, "u/" + s.getAuthor() + " * r/" + s.getSubredditName() + " * " + s.getScore() + " points", s.getUrl(),s.getThumbnail(),"https://www.reddit.com" +s.getPermalink() + ".json",s.getId(),Integer.toString(s.getVote().getValue())});
+                itemList.add(new String[]{s.getTitle(), dateposted + " * " + s.getDomain() + " * " + s.getCommentCount() + " comments", s.getAuthor() + " * r/" + s.getSubredditName() + " * " + s.getScore() + " points", s.getUrl(), s.getThumbnail(), "https://www.reddit.com" + s.getPermalink() + ".json", s.getId(), Integer.toString(s.getVote().getValue())});
             }
 
             /*try {
@@ -251,8 +240,7 @@ public class MainActivity extends Activity {
 
                 @Override
                 public int getViewTypeCount() {
-                    int Count = 30;
-                    return Count;
+                    return 30;
                 }
 
                 @Override
@@ -260,6 +248,7 @@ public class MainActivity extends Activity {
 
                     return position;
                 }
+
                 @Override
                 public View getView(int position, View convertView, ViewGroup parent) {
 
@@ -291,13 +280,11 @@ public class MainActivity extends Activity {
                     final Button button1 = (Button) view.findViewById(R.id.button1);
                     final Button button2 = (Button) view.findViewById(R.id.button2);
 
-
-
                     int liked = Integer.parseInt(text7.getText().toString());
 
                     if (liked > 0) {
                         button1.setTextColor(Color.parseColor("#FF5722"));
-                    } else if(liked < 0){
+                    } else if (liked < 0) {
                         button2.setTextColor(Color.parseColor("#00B0FF"));
                     }
 
@@ -338,13 +325,10 @@ public class MainActivity extends Activity {
                 }
             });
 
-
-
-
         }
     }
 
-    private class upvote extends AsyncTask<String,Void,String>{
+    private class upvote extends AsyncTask<String, Void, String> {
         private String helper;
 
         public upvote(String helper) {
@@ -369,13 +353,13 @@ public class MainActivity extends Activity {
             return null;
         }
 
-        protected void onPostExecute(String string){
+        protected void onPostExecute(String string) {
             Toast.makeText(MainActivity.this, "Upvoted", Toast.LENGTH_SHORT).show();
         }
     }
 
 
-    private class downvote extends AsyncTask<String,Void,String>{
+    private class downvote extends AsyncTask<String, Void, String> {
         private String helper;
 
         public downvote(String helper) {
@@ -400,17 +384,16 @@ public class MainActivity extends Activity {
             return null;
         }
 
-        protected void onPostExecute(String string){
+        protected void onPostExecute(String string) {
             Toast.makeText(MainActivity.this, "Downvoted", Toast.LENGTH_SHORT).show();
         }
     }
 
 
-
-
     private class UserChallengeTask extends AsyncTask<String, Void, OAuthData> {
         private OAuthHelper helper;
         private Credentials creds;
+
         public UserChallengeTask(OAuthHelper helper, Credentials creds) {
             this.helper = helper;
             this.creds = creds;
@@ -435,18 +418,18 @@ public class MainActivity extends Activity {
 
             setContentView(R.layout.activity_main);
 
-            getActionBar().show();
             listView = (ListView) findViewById(R.id.listView);
             //textView = (TextView) findViewById(R.id.headline_subreddit);
             Intent intent = getIntent();
 
-            chosenSubreddit = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
+            String chosenSubreddit = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
 
             if (chosenSubreddit == null) {
                 setTitle("frontpage");
             } else {
                 setTitle(chosenSubreddit);
             }
+
             new loginUser().execute();
             listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
                 @Override
@@ -463,22 +446,21 @@ public class MainActivity extends Activity {
             });
 
 
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                public void onItemClick(AdapterView<?> parent, View view,
+                                        int position, long id) {
 
-                    listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                        public void onItemClick(AdapterView<?> parent, View view,
-                                                int position, long id) {
-
-                            TextView c = (TextView) view.findViewById(R.id.text4);
-                            String s = c.getText().toString();
-                            Intent intent = new Intent(MainActivity.this, WebActivity.class);
-                            intent.putExtra(EXTRA_MESSAGE, s);
-                            startActivity(intent);
+                    TextView c = (TextView) view.findViewById(R.id.text4);
+                    String s = c.getText().toString();
+                    Intent intent = new Intent(MainActivity.this, WebActivity.class);
+                    intent.putExtra(EXTRA_MESSAGE, s);
+                    startActivity(intent);
                /* Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(s));
                 startActivity(browserIntent);*/
-                        }
+                }
 
 
-                    });
+            });
 
             drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
             drawerList = (ListView) findViewById(R.id.left_drawer);
@@ -508,10 +490,8 @@ public class MainActivity extends Activity {
             });
 
 
-
             new getLinks().execute("frontpage");
             new getsubreddits().execute();
-
 
 
         }
@@ -529,12 +509,12 @@ public class MainActivity extends Activity {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        if(mDrawerToggle.onOptionsItemSelected(item)){
-           if(drawerLayout.isDrawerOpen(GravityCompat.START)){
-               drawerLayout.closeDrawers();
-           }else{
-               drawerLayout.openDrawer(GravityCompat.START);
-           }
+        if (mDrawerToggle.onOptionsItemSelected(item)) {
+            if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+                drawerLayout.closeDrawers();
+            } else {
+                drawerLayout.openDrawer(GravityCompat.START);
+            }
 
         }
 
@@ -542,10 +522,9 @@ public class MainActivity extends Activity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-        clearPreferences();
+            clearPreferences();
             return true;
         }
-
 
 
         return super.onOptionsItemSelected(item);

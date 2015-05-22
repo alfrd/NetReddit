@@ -40,14 +40,10 @@ import java.util.List;
 
 
 public class CommentsActivity extends Activity {
-private String comments;
-    private TextView text;
+    private String comments;
     private ProgressDialog hej;
-    private String body;
     private ListView listView;
-    private ArrayList list;
     private List<String[]> itemList = new LinkedList<String[]>();
-
 
 
     @Override
@@ -55,14 +51,10 @@ private String comments;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comments);
         Intent intent = getIntent();
-         comments = intent.getStringExtra(WebActivity.EXTRA_MESSAGE);
+        comments = intent.getStringExtra(WebActivity.EXTRA_MESSAGE);
         listView = (ListView) findViewById(R.id.list);
         setTitle("Comments");
-        list = new ArrayList();
         new getComments().execute();
-
-
-
 
 
     }
@@ -107,12 +99,12 @@ private String comments;
 
                 }
 
-            }catch (JSONException | IOException e) {
-                body = e.getMessage();
+            } catch (JSONException | IOException e) {
+                e.printStackTrace();
             }
 
             return null;
-            }
+        }
 
         protected void onPostExecute(String s) {
             hej.dismiss();
@@ -137,12 +129,8 @@ private String comments;
                     String html = entry[1];
 
 
-
-
                     text1.setText(entry[0]);
                     text2.setText(html);
-
-
 
 
                     return view;
@@ -152,10 +140,7 @@ private String comments;
             });
 
         }
-        }
-
-
-
+    }
 
 
     @Override

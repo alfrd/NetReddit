@@ -22,9 +22,7 @@
             android:name=".WebActivity"
             android:label="@string/title_activity_comments"
             android:parentActivityName=".MainActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.hyco.netreddit.MainActivity" />
+
         </activity>
         <activity
             android:name=".LoginActivity"

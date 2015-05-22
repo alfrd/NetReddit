@@ -1,5 +1,6 @@
 package com.hyco.netreddit;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -22,14 +23,18 @@ public class WebActivity extends Activity {
         getWindow().requestFeature(Window.FEATURE_PROGRESS);
         super.onCreate(savedInstanceState);
 
-        WebView webview = new WebView(this);
+        ActionBar actionBar = getActionBar();
+        if (actionBar != null) {
+            actionBar.setHomeButtonEnabled(false);
+            actionBar.setDisplayHomeAsUpEnabled(false);
+            actionBar.setDisplayShowHomeEnabled(false);
+        }
 
+        WebView webview = new WebView(this);
 
         this.setProgressBarVisibility(true);
 
         webview.getSettings().setJavaScriptEnabled(true);
-
-        final Activity activity = this;
 
         setContentView(webview);
 
@@ -42,14 +47,13 @@ public class WebActivity extends Activity {
         String url = intent.getStringExtra(WebActivity.EXTRA_MESSAGE);
         setTitle(url);
 
-
-        if(url.contains("http://www.reddit.com")){
-           url=  url.replace("http://www.reddit.com","https://m.reddit.com");
+        if (url.contains("http://www.reddit.com")) {
+            url = url.replace("http://www.reddit.com", "https://m.reddit.com");
 
         }
 
 
-       final ProgressDialog progressDialog = new ProgressDialog(this);
+        final ProgressDialog progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Loading..");
         webview.loadUrl(url);
         webview.setWebViewClient(new WebViewClient() {
@@ -58,6 +62,7 @@ public class WebActivity extends Activity {
                 view.loadUrl(url);
                 return false;
             }
+
             @Override
             public void onPageFinished(WebView view, final String url) {
 
@@ -65,18 +70,13 @@ public class WebActivity extends Activity {
 
 
             }
+
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
 
                 progressDialog.show();
             }
         });
-
-
-
-
-
-
 
     }
 
