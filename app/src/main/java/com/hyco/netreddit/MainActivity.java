@@ -79,22 +79,21 @@ public class MainActivity extends Activity {
         webView.getSettings().setSupportZoom(true);
         webView.getSettings().setBuiltInZoomControls(true);
         webView.getSettings().setDisplayZoomControls(false);
-        // Create our RedditClient
+
         redditClient = new RedditClient(UserAgent.of("Android", "com.hyco.netreddi", "0.1", "mrsvedberg"));
 
 
         final OAuthHelper helper = redditClient.getOAuthHelper();
-        // This is Android, so our OAuth app should be an installed app.
+
         String psswd = getString(R.string.iamzzleeping_password);
         final Credentials credentials = Credentials.installedApp("mrsvedberg", psswd, "UMQ5vNDcMhb2XA", "http://mrsvedberg.github.io/");
 
-        // If this is true, then you will be able to refresh to access token
+
         boolean permanent = true;
-        // OAuth2 scopes to request. See https://www.reddit.com/dev/api/oauth for a full list
+
         String[] scopes = {"identity", "edit", "flair", "history", "modconfig", "modflair", "modlog", "modposts", "modwiki", "mysubreddits", "privatemessages", "read", "report", "save", "submit", "subscribe", "vote", "wikiedit", "wikiread"};
 
         URL authorizationUrl = helper.getAuthorizationUrl(credentials, permanent, scopes);
-        // Load the authorization URL into the browser
 
 
         webView.loadUrl(authorizationUrl.toExternalForm());
@@ -171,7 +170,7 @@ public class MainActivity extends Activity {
             } else {
                 current = new SubredditPaginator(redditClient, string[0]);
             }
-
+            current.setLimit(25);
             Date today = new Date();
             String dateposted;
             Listing<Submission> submissions = current.next();
