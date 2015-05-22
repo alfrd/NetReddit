@@ -12,6 +12,8 @@
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:textAppearance="?android:attr/textAppearanceListItem"
+        android:textSize="15sp"
+
         android:layout_toLeftOf="@+id/img1"
         android:layout_toRightOf="@+id/button1"
         />
@@ -24,7 +26,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/text1"
-        android:textSize="12sp"
+        android:textSize="11sp"
         android:layout_marginLeft="10dp"
         android:layout_marginBottom="5dp"
         android:layout_toLeftOf="@+id/img1"
@@ -38,7 +40,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/text2"
-        android:textSize="12sp"
+        android:textSize="11sp"
         android:layout_marginLeft="10dp"
         android:layout_marginBottom="5dp"
         android:layout_toLeftOf="@+id/img1"
