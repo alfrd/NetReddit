@@ -48,10 +48,14 @@ import net.dean.jraw.paginators.UserSubredditsPaginator;
 
 import java.io.File;
 import java.net.URL;
+import java.sql.Time;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 
 public class MainActivity extends Activity {
@@ -178,10 +182,27 @@ public class MainActivity extends Activity {
                 current = new SubredditPaginator(redditClient, string[0]);
             }
 
+            Date today = new Date();
+            String dateposted;
             Listing<Submission> submissions = current.next();
             for (Submission s : submissions) {
+                Date posted = s.getCreatedUtc();
+                long diff = today.getTime() - posted.getTime();
+                long diffMinutes = TimeUnit.MILLISECONDS.toMinutes(diff);
+                long diffHours = TimeUnit.MILLISECONDS.toHours(diff);
+                long diffDays = TimeUnit.MILLISECONDS.toDays(diff);
 
-                itemList.add(new String[]{s.getTitle(), s.getCommentCount() + " comments" + " * " + s.getDomain(), "u/" + s.getAuthor() + " * r/" + s.getSubredditName() + " * " + s.getScore() + " points", s.getUrl(),s.getThumbnail(),"https://www.reddit.com" +s.getPermalink() + ".json",s.getId(),Integer.toString(s.getVote().getValue())});
+                if(diffMinutes < 60){
+                    dateposted =  diffMinutes + "min";
+                }else if(diffHours < 24){
+                    dateposted = diffHours + "hr";
+                } else{
+                    dateposted = diffDays + "days";
+                }
+
+
+
+                itemList.add(new String[]{s.getTitle(), s.getCommentCount() + " comments" + " * " + s.getDomain() + " * " + dateposted, "u/" + s.getAuthor() + " * r/" + s.getSubredditName() + " * " + s.getScore() + " points", s.getUrl(),s.getThumbnail(),"https://www.reddit.com" +s.getPermalink() + ".json",s.getId(),Integer.toString(s.getVote().getValue())});
             }
 
             /*try {
