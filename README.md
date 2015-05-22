@@ -1,5 +1,5 @@
 # NetReddit
-
+Read more: http://alfrd.github.io/netredditwebsite/
 ##Download
 https://github.com/alfrd/NetReddit/blob/master/app/app-release.apk?raw=true
 
