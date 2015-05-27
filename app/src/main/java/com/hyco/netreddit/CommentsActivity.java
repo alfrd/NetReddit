@@ -43,7 +43,9 @@ public class CommentsActivity extends Activity {
     private String comments;
     private ProgressDialog hej;
     private ListView listView;
+    private TextView textview;
     private List<String[]> itemList = new LinkedList<String[]>();
+    private String selfpost_text;
 
 
     @Override
@@ -53,6 +55,7 @@ public class CommentsActivity extends Activity {
         Intent intent = getIntent();
         comments = intent.getStringExtra(WebActivity.EXTRA_MESSAGE);
         listView = (ListView) findViewById(R.id.list);
+        textview = (TextView) findViewById(R.id.text);
         setTitle("Comments");
         new getComments().execute();
 
@@ -71,8 +74,7 @@ public class CommentsActivity extends Activity {
 
         protected String doInBackground(Void... arg0) {
             String s = "done";
-          /* CommentsLoader comments = new CommentsLoader("yo");
-            body = comments.fetchComments().get(0).toString();*/
+
             try {
                 URL subredditURL = new URL(
                         comments);
@@ -87,10 +89,24 @@ public class CommentsActivity extends Activity {
                         .getJSONObject("data")
                         .getJSONArray("children");
 
-                for (int i = 0; i < r.length(); i++) {
-                    if (r.getJSONObject(i).optString("kind") == null)
 
+
+                JSONArray selfpostarray = new JSONArray(raw)
+                        .getJSONObject(0)
+                        .getJSONObject("data").getJSONArray("children");
+                JSONObject selfpost = selfpostarray.getJSONObject(0).getJSONObject("data");
+                if(selfpost.getBoolean("is_self")){
+                   selfpost_text = selfpost.getString("selftext");
+                }
+
+
+                for (int i = 0; i < r.length(); i++) {
+
+
+                    if (r.getJSONObject(i).optString("kind") == null)
                         continue;
+
+
                     if (!r.getJSONObject(i).optString("kind").equals("t1"))
                         continue;
                     JSONObject data = r.getJSONObject(i).getJSONObject("data");
@@ -108,6 +124,8 @@ public class CommentsActivity extends Activity {
 
         protected void onPostExecute(String s) {
             hej.dismiss();
+            textview.setText(selfpost_text);
+            textview.setMovementMethod(new ScrollingMovementMethod());
             listView.setAdapter(new ArrayAdapter<String[]>(
                     CommentsActivity.this,
                     R.layout.comments_list,

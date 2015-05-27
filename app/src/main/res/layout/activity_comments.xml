@@ -8,10 +8,24 @@
     android:paddingBottom="0dp"
     tools:context="com.hyco.netreddit.CommentsActivity">
 
+    <TextView
+        android:id="@+id/text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:textSize="15sp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginBottom="5dp"
+        android:singleLine="false"
+        android:maxLines="10"
+        android:scrollbars="vertical"
+        />
+
     <ListView
         android:id="@+id/list"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@id/text"
 
         />
 
