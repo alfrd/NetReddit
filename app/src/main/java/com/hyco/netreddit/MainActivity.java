@@ -7,6 +7,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -68,6 +69,11 @@ public class MainActivity extends Activity {
     public final static String EXTRA_MESSAGE = "com.hyco.netreddit.MESSAGE";
 
     @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        return false;
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -108,6 +114,7 @@ public class MainActivity extends Activity {
             }
         });
 
+
         setContentView(webView);
 
 
@@ -121,10 +128,8 @@ public class MainActivity extends Activity {
         }
 
         protected String doInBackground(Void... arg0) {
-            String done = "done";
 
-
-            return done;
+            return "done";
         }
 
         protected void onPostExecute(String s) {
@@ -153,7 +158,7 @@ public class MainActivity extends Activity {
 
         protected void onPostExecute(List<String> list) {
 
-            drawerList.setAdapter(new ArrayAdapter<String>(MainActivity.this,
+            drawerList.setAdapter(new ArrayAdapter<>(MainActivity.this,
                     android.R.layout.simple_list_item_1, subredditList));
         }
     }
@@ -177,7 +182,7 @@ public class MainActivity extends Activity {
             String dateposted;
 
 
-            try{
+            try {
                 Listing<Submission> submissions = current.next();
                 for (Submission s : submissions) {
                     Date posted = s.getCreatedUtc();
@@ -197,7 +202,7 @@ public class MainActivity extends Activity {
 
                     itemList.add(new String[]{s.getTitle(), dateposted + " * " + s.getDomain() + " * " + s.getCommentCount() + " comments", s.getAuthor() + " * r/" + s.getSubredditName() + " * " + s.getScore() + " points", s.getUrl(), s.getThumbnail(), "https://www.reddit.com" + s.getPermalink() + ".json", s.getId(), Integer.toString(s.getVote().getValue())});
                 }
-            }catch(Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 
@@ -443,14 +448,20 @@ public class MainActivity extends Activity {
             listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
                 @Override
                 public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    TextView c = (TextView) view.findViewById(R.id.text5);
+                    TextView c = (TextView) view.findViewById(R.id.text4);
                     String s = c.getText().toString();
-                    /*Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(s));
-                    startActivity(browserIntent);*/
-                    Intent intent = new Intent(MainActivity.this, CommentsActivity.class);
+
+
+                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(s));
                     intent.putExtra(EXTRA_MESSAGE, s);
                     startActivity(intent);
                     return true;
+
+                    /*Intent intent = new Intent(MainActivity.this, WebActivity.class);
+                    intent.putExtra(EXTRA_MESSAGE, s);
+                    startActivity(intent);
+                    return true;*/
+
                 }
             });
 
@@ -459,13 +470,12 @@ public class MainActivity extends Activity {
                 public void onItemClick(AdapterView<?> parent, View view,
                                         int position, long id) {
 
-                    TextView c = (TextView) view.findViewById(R.id.text4);
+                    TextView c = (TextView) view.findViewById(R.id.text5);
                     String s = c.getText().toString();
-                    Intent intent = new Intent(MainActivity.this, WebActivity.class);
+                    Intent intent = new Intent(MainActivity.this, CommentsActivity.class);
                     intent.putExtra(EXTRA_MESSAGE, s);
                     startActivity(intent);
-               /* Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(s));
-                startActivity(browserIntent);*/
+
                 }
 
 
@@ -510,50 +520,5 @@ public class MainActivity extends Activity {
 
         }
     }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        if (mDrawerToggle.onOptionsItemSelected(item)) {
-            if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-                drawerLayout.closeDrawers();
-            } else {
-                drawerLayout.openDrawer(GravityCompat.START);
-            }
-
-        }
-
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            clearPreferences();
-            return true;
-        }
-
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    private void clearPreferences() {
-        try {
-            // clearing app data
-            Runtime runtime = Runtime.getRuntime();
-            runtime.exec("pm clear com.hyco.netreddit");
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
 
 }

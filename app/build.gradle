@@ -1,13 +1,13 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 22
+    compileSdkVersion 23
     buildToolsVersion "21.1.2"
 
     defaultConfig {
         applicationId "com.hyco.netreddit"
-        minSdkVersion 22
-        targetSdkVersion 22
+        minSdkVersion 20
+        targetSdkVersion 23
         versionCode 1
         versionName "1.0"
     }
@@ -40,7 +40,9 @@ dependencies {
     compile "net.dean.jraw:JRAW:0.7.0.2"
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:22.1.1'
+    compile 'com.android.support:appcompat-v7:23.2.1'
     compile 'org.jsoup:jsoup:1.8.2'
+    compile 'com.commit451:PhotoView:1.2.5'
+
 
 }

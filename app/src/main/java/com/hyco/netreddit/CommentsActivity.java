@@ -2,14 +2,19 @@ package com.hyco.netreddit;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.provider.DocumentsContract;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.Spanned;
+import android.text.method.LinkMovementMethod;
 import android.text.method.ScrollingMovementMethod;
+import android.text.util.Linkify;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,6 +24,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -27,6 +33,7 @@ import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.parser.Parser;
+import org.xmlpull.v1.XmlPullParser;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -37,25 +44,49 @@ import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.StringTokenizer;
 
 
 public class CommentsActivity extends Activity {
     private String comments;
     private ProgressDialog hej;
     private ListView listView;
-    private TextView textview;
+    private String selfpost_title;
     private List<String[]> itemList = new LinkedList<String[]>();
+    private TextView tv;
+    private ImageView im;
     private String selfpost_text;
+    private Boolean is_selfpost;
+    private String flair;
+    private String author;
+    private String score;
+    private String subreddit;
+    private String imgurl;
+    private Boolean hasthumb = true;
+    private String thumbnail;
+
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        return false;
+    }
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comments);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
+
         Intent intent = getIntent();
         comments = intent.getStringExtra(WebActivity.EXTRA_MESSAGE);
         listView = (ListView) findViewById(R.id.list);
-        textview = (TextView) findViewById(R.id.text);
+
+        is_selfpost = false;
+        tv = new TextView(this);
+        im = new ImageView(this);
+
+
         setTitle("Comments");
         new getComments().execute();
 
@@ -89,19 +120,27 @@ public class CommentsActivity extends Activity {
                         .getJSONObject("data")
                         .getJSONArray("children");
 
-
-
                 JSONArray selfpostarray = new JSONArray(raw)
                         .getJSONObject(0)
                         .getJSONObject("data").getJSONArray("children");
                 JSONObject selfpost = selfpostarray.getJSONObject(0).getJSONObject("data");
-                if(selfpost.getBoolean("is_self")){
-                   selfpost_text = selfpost.getString("selftext");
+                if (selfpost.getBoolean("is_self")) {
+                    selfpost_text = selfpost.getString("selftext");
+                    is_selfpost = true;
+                }
+                selfpost_title = selfpost.getString("title");
+                flair = selfpost.getString("link_flair_text");
+                score = selfpost.getString("score");
+                author = selfpost.getString("author");
+                subreddit = selfpost.getString("subreddit");
+                imgurl = selfpost.getJSONObject("preview").getJSONArray("images").getJSONObject(0).getJSONObject("source").getString("url");
+                thumbnail = selfpost.getString("thumbnail");
+
+                if (thumbnail.equals("null")) {
+                    hasthumb = false;
                 }
 
-
                 for (int i = 0; i < r.length(); i++) {
-
 
                     if (r.getJSONObject(i).optString("kind") == null)
                         continue;
@@ -111,8 +150,7 @@ public class CommentsActivity extends Activity {
                         continue;
                     JSONObject data = r.getJSONObject(i).getJSONObject("data");
 
-                    itemList.add(new String[]{data.getString("author") + " * " + data.getString("score") + " points", data.getString("body")});
-
+                    itemList.add(new String[]{data.getString("author") + " (" + data.getString("score") + " points" + ") ", data.getString("body")});
                 }
 
             } catch (JSONException | IOException e) {
@@ -124,8 +162,27 @@ public class CommentsActivity extends Activity {
 
         protected void onPostExecute(String s) {
             hej.dismiss();
-            textview.setText(selfpost_text);
-            textview.setMovementMethod(new ScrollingMovementMethod());
+            setTitle(subreddit);
+            listView.addHeaderView(tv);
+            tv.setTextColor(Color.WHITE);
+            tv.append(Html.fromHtml("<h1>" + selfpost_title + "</h1>"));
+
+            if (is_selfpost) {
+                tv.setTextSize(14);
+                tv.append(Html.fromHtml("<h6>" + flair + " * " + author + " * " + score + " points" + "</h6>"));
+                tv.append(selfpost_text);
+            } else if (hasthumb) {
+                listView.addHeaderView(im);
+                tv.append(Html.fromHtml("<strong>" + flair + " * " + author + " * " + score + " points" + "<strong>"));
+                Picasso.with(getBaseContext()).load(imgurl).centerCrop().resize(1350, 700).into(im);
+            } else {
+                tv.append(Html.fromHtml("<strong>" + flair + " * " + author + " * " + score + " points" + "<strong>"));
+
+            }
+
+            tv.setPadding(25, 25, 25, 25);
+
+            Linkify.addLinks(tv, Linkify.ALL);
             listView.setAdapter(new ArrayAdapter<String[]>(
                     CommentsActivity.this,
                     R.layout.comments_list,
@@ -136,20 +193,15 @@ public class CommentsActivity extends Activity {
                 @Override
                 public View getView(int position, View convertView, ViewGroup parent) {
 
-
                     View view = super.getView(position, convertView, parent);
-
-
                     String[] entry = itemList.get(position);
                     TextView text1 = (TextView) view.findViewById(R.id.text1);
                     TextView text2 = (TextView) view.findViewById(R.id.text2);
 
-                    String html = entry[1];
 
-
-                    text1.setText(entry[0]);
-                    text2.setText(html);
-
+                    text1.setText(Html.fromHtml("<strong>" + entry[0] + "<strong>"));
+                    text2.setText(entry[1]);
+                    Linkify.addLinks(text2, Linkify.ALL);
 
                     return view;
 
@@ -158,6 +210,8 @@ public class CommentsActivity extends Activity {
             });
 
         }
+
+
     }
 
 

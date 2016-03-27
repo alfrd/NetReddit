@@ -24,13 +24,12 @@
             android:parentActivityName=".MainActivity" >
 
         </activity>
-        <activity
-            android:name=".LoginActivity"
-            android:label="@string/title_activity_login" >
-        </activity>
+
         <activity
             android:name=".CommentsActivity"
-            android:label="@string/title_activity_comments" >
+            android:label="@string/title_activity_comments"
+            android:parentActivityName=".MainActivity"
+            >
         </activity>
     </application>
 
